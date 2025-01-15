@@ -5,15 +5,9 @@ pipeline {
                 stage('Build') {
             steps {
                 echo 'Building the project with Maven...'
-                sh 'mvn clean compile'
+                sh 'mvn clean package'
             }
         }
 
-        stage('Test') {
-            steps {
-                echo 'Running tests with Maven...'
-                sh 'mvn test'
-            }
-        }
     }
-
+}
