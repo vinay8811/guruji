@@ -1,13 +1,24 @@
 pipeline {
     agent any
-
-       stages {
-                stage('Build') {
+    environment {
+        PATH = "/root/maven/bin:$PATH"
+    }
+    stages {
+        stage('build') {
             steps {
-                echo 'Building the project with Maven...'
-                sh 'mvn clean package'
+                sh 'mvn clean deploy'
             }
         }
-
+        stage('SonarQube analysis') {
+            environment {
+                scannerHome = tool 'vinay-sonar-scanner'
+            }
+            steps {
+                withSonarQubeEnv('vinay_sonarqube_server') {
+                    sh "${scannerHome}/bin/sonar-scanner"
+                }
+            }
+        }
     }
 }
+
